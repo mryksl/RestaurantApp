@@ -1,0 +1,35 @@
+﻿@page
+@model MyRestaurantApp.Pages.FoodTypes.DeleteModel
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<br />
+<h2>Delete Food Type</h2>
+<hr />
+
+<form method="post">
+    <div class="form-border">
+        <input type="hidden" asp-for="FoodType.Id" />
+        <fieldset disabled>
+
+            <div class="form-group row">
+                <div class="col-sm-2">
+                    <label asp-for="FoodType.Name" class="custom-label"></label>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="FoodType.Name" class="form-control" />
+                </div>
+            </div>
+           
+            <br />
+
+        </fieldset>
+        <div class="form-group">
+            <input type="submit" value="Delete" class="btn btn-sm btn-danger" />
+            <a asp-page="Index" class="btn btn-sm btn-success">Back to list</a>
+        </div>
+    </div>
+</form>
+
+

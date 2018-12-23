@@ -1,0 +1,108 @@
+﻿@page
+@model MyRestaurantApp.Pages.Order.OrderPickupDetailsModel
+@using MyRestaurantApp.Utility
+@{
+    ViewData["Title"] = "OrderPickupDetails";
+}
+
+<br />
+<h3>Confirm Pick Up Details</h3>
+
+<br />
+<form method="post">
+    <div class="row thumbnail">
+        <div class="col-sm-8" style="border-right:1px solid #bbb9b9">
+            <br />
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.FirstName" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.FirstName" disabled class="form-control" />
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.LastName" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.LastName" disabled class="form-control" />
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.Email" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.Email" disabled class="form-control" />
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.PhoneNumber" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="@Model.OrderDetailViewModel.OrderHeader.ApplicationUser.PhoneNumber" disabled class="form-control" />
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.OrderTotal" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="@Model.OrderDetailViewModel.OrderHeader.OrderTotal" disabled class="form-control" />
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.OrderDate" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input value="@Model.OrderDetailViewModel.OrderHeader.OrderDate.ToShortDateString() @Model.OrderDetailViewModel.OrderHeader.PickUpTime.ToShortDateString()" disabled class="form-control" />
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label asp-for="@Model.OrderDetailViewModel.OrderHeader.Comments" class="custom-label"></label>
+                </div>
+                <div class="col-sm-9">
+                    <input asp-for="@Model.OrderDetailViewModel.OrderHeader.Comments" disabled class="form-control" />
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <br />
+            <div class="col-sm-12">
+                <h4>Order No : @Model.OrderDetailViewModel.OrderHeader.Id</h4>
+            </div>
+            <div class="col-sm-12">
+                <ul class="list-group">
+                    @foreach (var detail in Model.OrderDetailViewModel.OrderDetail)
+                    {
+                        <li class="list-group-item">
+                            <span class="badge">@detail.Count</span>
+                            @detail.Name
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col-sm-12">
+                @if (Model.OrderDetailViewModel.OrderHeader.Status.Equals(SD.StatusReady))
+                {
+                    <button type="submit" asp-route-orderId="@Model.OrderDetailViewModel.OrderHeader.Id" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>Confirm Pickup</button>
+                }
+                else
+                {
+                    <button type="submit" disabled asp-route-orderId="@Model.OrderDetailViewModel.OrderHeader.Id" class="btn btn-success"><span class="glyphicon glyphicon-check"></span>@Model.OrderDetailViewModel.OrderHeader.Status</button>
+                }
+            </div>
+        </div>
+    </div>
+</form>

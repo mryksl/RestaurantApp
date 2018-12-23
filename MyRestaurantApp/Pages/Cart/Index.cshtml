@@ -1,0 +1,130 @@
+﻿@page
+@model MyRestaurantApp.Pages.Cart.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<form method="post">
+
+    <h2>Your Shopping Cart</h2>
+
+    <br />
+
+    @if (Model.detailCart.listCart.Count > 0)
+    {
+    <div class="thumbnail row">
+        <table width="100%">
+            <tr class="paddingB30pxToTH">
+                <th><b>Orders</b></th>
+
+                <th style="width:70px; text-align:center">
+                    <label asp-for="@Model.detailCart.listCart.FirstOrDefault().MenuItem.Price"></label>
+                </th>
+                <th style="width:70px; text-align:center">
+                    <label asp-for="@Model.detailCart.listCart.FirstOrDefault().Count"></label>
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.detailCart.listCart)
+            {
+                <tr style="border-bottom:1px solid #e9e4e4"></tr>
+                <tr class="paddingB30pxToTD">
+                    <td>
+                        <b>@Html.DisplayFor(c => item.MenuItem.Name)</b>
+                        <br />
+                        @Html.DisplayFor(c => item.MenuItem.Description)
+                    </td>
+                    <td style="width:70px;text-align:center;">
+                        @Html.DisplayFor(c => item.MenuItem.Price)
+                    </td>
+                    <td style="width:70px;text-align:center;">
+                        @Html.DisplayFor(c => item.Count)
+                    </td>
+
+                    <td>
+                        <button type="submit" asp-page-handler="plus" asp-route-cartId="@item.Id" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+
+                        <button type="submit" asp-page-handler="minus" asp-route-cartId="@item.Id" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-minus"></span>
+                        </button>
+                    </td>
+                </tr>
+
+            }
+        </table>
+
+
+        <hr />
+        <div class="row">
+            <div class="col-sm-2">
+                <label class="custom-label">Order Total :</label>
+            </div>
+            <div class="col-sm-3">
+                <input asp-for="@Model.detailCart.OrderHeader.OrderTotal" hidden   />
+                <input asp-for="@Model.detailCart.OrderHeader.OrderTotal" disabled class="form-control" />
+            </div>
+            <div class="col-sm-2 col-sm-offset-2">
+                <label class="custom-label">Pickup Time :</label>
+            </div>
+            <div class="col-sm-3">
+                <input asp-for="@Model.detailCart.OrderHeader.PickUpTime" class="form-control" type="text" value="" id="timePicker" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+                <label class="custom-label">Comments :</label>
+            </div>
+            <div class="col-sm-10">
+                <textarea style="height:100px;" asp-for="@Model.detailCart.OrderHeader.Comments" class="form-control"></textarea>
+            </div>
+        </div>
+        <div class="row" style="padding-top:5px;">
+            <div class="col-sm-5 col-sm-offset-2">
+                <label class="text-danger" id="lblShopClosed" style="display:none;">Restaurant closed for the day</label>
+            </div>
+            <div class="col-sm-5 text-right">
+                <button type="submit" id="btnPlaceOrder" value="Place Order" class="btn btn-success">Place Order</button>
+            </div>
+        </div>
+    </div>
+    }
+    else
+    {
+       <div>No Items added to the shopping cart...</div>
+
+    }
+
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var currentDateTime = new Date();
+
+            var minTime = "";
+            if (currentDateTime.getHours() < 11) {
+                minTime = "12:00pm";
+            } else {
+                if (currentDateTime.getMinutes() < 30) {
+                    minTime = (currentDateTime.getHours() + 1).toString() + ':30pm';
+                } else {
+                    minTime = (currentDateTime.getHours() + 2).toString() + ':00pm';
+                }
+            }
+
+            if (currentDateTime.getHours() > 20) {
+                $('#timepicker').prop('disabled', true);
+                $('#btnPlaceOrder').prop('disabled', true);
+                $('#lblSopClosed').show();
+            }
+            $('#timePicker').timepicker({
+                'minTime': minTime,
+                'maxTime': maxTime
+            });
+       
+        })
+    </script>
+}
